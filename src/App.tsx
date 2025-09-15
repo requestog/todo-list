@@ -1,7 +1,9 @@
 import Header from "@/components/Header";
 import TodoList from "@/components/TodoList";
 import React, {useState} from "react";
-import TodoForm from "@/TodoForm";
+import TodoForm from "@/components/TodoForm";
+import Input from "@/components/UI/Input";
+import Button from "@/components/UI/Button";
 
 function App() {
     const [todos, setTodos] = useState<Todo[]>([
@@ -31,6 +33,25 @@ function App() {
                         </div>
                 }
             </div>
+            <div className="mt-10 max-w-md mx-auto p-5 rounded-lg shadow">
+                <div className="container mx-auto max-w-sm">
+                    <h1 className="text-center text-2xl font-semibold text-gray-700 mb-6">
+                        ВХОД
+                    </h1>
+                    <form className="flex flex-col w-full gap-4">
+                        <Input
+                            type="email"
+                            placeholder="email"
+                        />
+                        <Input
+                            type="password"
+                            placeholder="password"
+                        />
+                        <Button>Войти</Button>
+                    </form>
+                </div>
+            </div>
+
         </div>
     )
 }
