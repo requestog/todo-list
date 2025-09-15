@@ -19,7 +19,16 @@ const TodoForm = ({create}) => {
     return (
         <div className="mt-10 max-w-5xl mx-auto p-5 rounded-lg shadow">
             <div className="flex gap-2">
-                <Dropdown/>
+                <Dropdown
+                    items={[
+                        { id: 1, label: 'Все' },
+                        { id: 2, label: 'Активные' },
+                        { id: 3, label: 'Выполненные' },
+                    ]}
+                    defaultValue={{ id: 1, label: 'Все' }}
+                    onSelect={(item) => console.log('Selected:', item)}
+                />
+
                 <div className="flex items-center gap-2 w-full">
                     <form className="flex gap-2 w-full">
                         <Input
