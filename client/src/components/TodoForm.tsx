@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import Dropdown from "@/components/UI/DropDown";
-import Input from "@/components/UI/Input";
-import Button from "@/components/UI/Button";
+import Dropdown from "./UI/DropDown.tsx";
+import Input from "./UI/Input.tsx";
+import Button from "./UI/Button.tsx";
 
 const TodoForm = ({create}) => {
     const [title, setTitle] = useState("");

@@ -1,5 +1,5 @@
 import React from 'react';
-import Button from "@/components/UI/Button";
+import Button from "./UI/Button.tsx";
 
 const Header = () => {
     return (
