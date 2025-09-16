@@ -49,4 +49,12 @@ export class UserService {
     private hashPassword(password: string): string {
         return bcrypt.hashSync(password, 5);
     }
+
+    async getSaveUserById(id: string): Promise<ISaveUser> {
+        return (await this.userModel
+            .findById(id)
+            .select('-password -__v -createdAt -updatedAt')
+            .lean()
+            .exec()) as unknown as ISaveUser;
+    }
 }

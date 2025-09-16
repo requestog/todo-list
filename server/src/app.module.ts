@@ -2,6 +2,7 @@ import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
 import {UserModule} from "./modules/user/user.module";
 import {DatabaseModule} from "./modules/database/database.module";
+import {AuthModule} from "./modules/auth/auth.module";
 
 @Module({
     imports: [
@@ -10,7 +11,8 @@ import {DatabaseModule} from "./modules/database/database.module";
             envFilePath: `.${process.env.NODE_ENV}.env`,
         }),
         UserModule,
-        DatabaseModule
+        DatabaseModule,
+        AuthModule,
     ],
 })
 
