@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 
-const Input = React.forwardRef((props, ref) => {
+const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>((props, ref) => {
     return (
-        <input ref={ref} {...props} className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <input
+            ref={ref}
+            {...props}
+            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
     );
 });
 

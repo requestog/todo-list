@@ -5,10 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="795f63b5-16d1-415d-b602-ea7b82c6907c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/client/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/AddTodo.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/AddTodo.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/Header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/Header.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/TodoForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/TodoForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/UI/Button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Button.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/components/UI/Input.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/components/UI/Input.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/client/vite.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,14 +26,17 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="TypeScript File" />
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
         <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -52,7 +63,8 @@
     "npm.dev.executor": "Run",
     "npm.npm dev.executor": "Run",
     "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "copyright.filetypes.JavaScript",
+    "npm.start:dev.executor": "Run",
+    "settings.editor.selected.configurable": "copyright.filetypes.TypeScript",
     "ts.external.directory.path": "C:\\Users\\root\\WebstormProjects\\todo-list\\server\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
@@ -63,24 +75,14 @@
       <recent name="C:\Users\root\WebstormProjects\todo-list\server\src\services" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\root\WebstormProjects\todo-list\client" />
       <recent name="C:\Users\root\WebstormProjects\todo-list" />
       <recent name="C:\Users\root\WebstormProjects\todo-list\server\src" />
       <recent name="C:\Users\root\WebstormProjects\todo-list\client\src" />
-      <recent name="C:\Users\root\WebstormProjects\todo-list\client" />
       <recent name="C:\Users\root\WebstormProjects\todo-list\src\components" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
-    <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/server/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="dev" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="npm.start:dev">
     <configuration name="npm dev" type="js.build_tools.npm">
       <package-json value="$PROJECT_DIR$/client/package.json" />
       <command value="run" />
@@ -91,11 +93,11 @@
       <envs />
       <method v="2" />
     </configuration>
-    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+    <configuration name="start:dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/server/package.json" />
       <command value="run" />
       <scripts>
-        <script value="start" />
+        <script value="start:dev" />
       </scripts>
       <node-interpreter value="project" />
       <envs />
@@ -103,8 +105,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="npm.dev" />
-        <item itemvalue="npm.start" />
+        <item itemvalue="npm.start:dev" />
       </list>
     </recent_temporary>
   </component>
@@ -126,7 +127,8 @@
       <workItem from="1757923210590" duration="3834000" />
       <workItem from="1758000281470" duration="49000" />
       <workItem from="1758000466024" duration="557000" />
-      <workItem from="1758001248079" duration="8030000" />
+      <workItem from="1758001248079" duration="29142000" />
+      <workItem from="1758037079675" duration="2145000" />
     </task>
     <servers />
   </component>
