@@ -1,6 +1,7 @@
 import {Module} from '@nestjs/common';
-import {AppService} from './app.service';
 import {ConfigModule} from '@nestjs/config';
+import {UserModule} from "./modules/user/user.module";
+import {DatabaseModule} from "./modules/database/database.module";
 
 @Module({
     imports: [
@@ -8,9 +9,9 @@ import {ConfigModule} from '@nestjs/config';
             isGlobal: true,
             envFilePath: `.${process.env.NODE_ENV}.env`,
         }),
+        UserModule,
+        DatabaseModule
     ],
-    controllers: [],
-    providers: [AppService],
 })
 
 export class AppModule {}
