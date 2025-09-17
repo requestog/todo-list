@@ -24,7 +24,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update, checkedTodos,
     };
 
     return (
-        <div className="flex items-center justify-between gap-2 p-5 mb-5 border rounded-lg text-lg border-gray-100">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 p-5 mb-5 border rounded-lg text-lg border-gray-100">
             <div className="flex items-center gap-2 flex-1">
                 <input
                     type="checkbox"
@@ -53,7 +53,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update, checkedTodos,
                     </label>
                 )}
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap gap-2 mt-2 sm:mt-0">
                 {isEditing ? (
                     <>
                         <Button onClick={handleSave}>Сохранить</Button>

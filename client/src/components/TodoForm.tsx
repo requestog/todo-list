@@ -23,8 +23,9 @@ const TodoForm: React.FC<TodoFormProps> = ({ create, onFilterChange }) => {
 
     return (
         <div className="mt-10 max-w-5xl mx-auto p-5 rounded-lg shadow">
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                 <Dropdown
+                    className="w-full sm:w-40"
                     items={[
                         { id: 1, label: 'Все' },
                         { id: 2, label: 'Активные' },
