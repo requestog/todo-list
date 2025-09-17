@@ -10,6 +10,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import {Session, SessionSchema} from "./models/session.model";
 import {JwtStrategy} from "./strategies/jwt.strategy";
+import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import {JwtStrategy} from "./strategies/jwt.strategy";
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, TokenService, CookieService, JwtService, JwtStrategy],
-  exports: [AuthService, TokenService, CookieService, JwtService],
+  providers: [AuthService, TokenService, CookieService, JwtService, JwtStrategy, JwtAuthGuard],
+  exports: [AuthService, TokenService, CookieService, JwtService, JwtAuthGuard],
 })
 export class AuthModule {}
