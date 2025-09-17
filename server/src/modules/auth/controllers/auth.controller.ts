@@ -5,7 +5,7 @@ import {IAuthResponse} from "../interfaces/IAuthResponse";
 import {AuthService} from "../services/auth.service";
 import {CookieService} from "../services/cookie.service";
 import {Request, Response} from 'express';
-import {LogoutDto} from "../dto/LogoutDto";
+import {LogoutDto} from "../dto/logout.dto";
 
 @Controller('auth')
 export class AuthController {
