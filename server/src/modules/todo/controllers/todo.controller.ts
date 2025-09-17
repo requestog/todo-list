@@ -10,17 +10,20 @@ export class TodoController {
     }
 
     @Post('/create')
-    async create(@Body() dto: TodoDto,): Promise<void> {
+    async create(@Body() dto: TodoDto): Promise<{ message: string }> {
         await this.todoService.create(dto);
+        return { message: "Задача успешно создана" }
     }
 
     @Delete('/delete/:id')
-    async delete(@Param('id') id: string): Promise<void> {
+    async delete(@Param('id') id: string): Promise<{ message: string }> {
         await this.todoService.delete(id);
+        return { message: `Задача ${id} удалена` }
     }
 
     @Put('/update/:id')
-    async update(@Param('id') id: string, @Body() dto: { title?: string }): Promise<void> {
+    async update(@Param('id') id: string, @Body() dto: { title?: string }): Promise<{ message: string }> {
         await this.todoService.updateTitle(id, dto.title);
+        return { message: `Задача ${id} обновлена` }
     }
 }
