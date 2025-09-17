@@ -1,7 +1,8 @@
 import type IUser from "../../models/IUser.ts";
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable} from "mobx";
 import type {IAuthResponse} from "../../models/IAuthResponse.ts";
 import {AuthService} from "../../services/AuthService.ts";
+import $api from "../../http";
 
 export default class UserStore {
     user = {} as IUser;
@@ -18,9 +19,42 @@ export default class UserStore {
                 password,
             );
             localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("idSession", response.idSession);
+            this.setIsAuth(true);
+            this.setUser(response.user);
         } catch (error) {
-            console.log("registrationn error: ", error);
+            console.log("registration error: ", error);
         }
+    }
+
+    async login(username: string, password: string): Promise<void> {
+        try {
+            const response: IAuthResponse = await AuthService.login(username, password);
+            localStorage.setItem("accessToken", response.accessToken);
+            localStorage.setItem("idSession", response.idSession);
+            this.setIsAuth(true);
+            this.setUser(response.user);
+        } catch (error) {
+            console.error("login error:", error);
+        }
+    }
+
+    async checkAuth(): Promise<void> {
+        try {
+            const response = await $api.get("api/auth/me");
+            this.setIsAuth(true);
+            this.setUser(response.data);
+        } catch (error) {
+            console.error("checkAuth error:", error);
+        }
+    }
+
+    setIsAuth(bool: boolean): void {
+        this.isAuth = bool;
+    }
+
+    setUser(user: IUser): void {
+        this.user = user;
     }
 
 }

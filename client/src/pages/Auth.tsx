@@ -7,12 +7,15 @@ const Auth = () => {
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [registration, setRegistration] = useState(true);
 
     async function send() {
         try {
-            console.log(username, password);
-            const data = await userStore.registration(username, password);
-            console.log(data);
+            if (registration) {
+                await userStore.registration(username, password);
+            } else {
+                await userStore.login(username, password);
+            }
         } catch (error) {
             if (error instanceof Error) {
                 console.error(error.message);
@@ -27,7 +30,7 @@ const Auth = () => {
         <div className="mt-10 max-w-md mx-auto p-5 rounded-lg shadow">
             <div className="container mx-auto max-w-sm">
                 <h1 className="text-center text-2xl font-semibold text-gray-700 mb-6">
-                    РЕГИСТРАЦИЯ
+                    {registration ? "Регистрация" : "Вход"}
                 </h1>
                 <div className="flex flex-col w-full gap-4">
                     <Input
@@ -43,10 +46,11 @@ const Auth = () => {
                         name="password"
                     />
 
-                    <Button onClick={() => send()}>Регистрация</Button>
-                    <h5 className="text-center text-sm font-semibold text-gray-400 mb-6">
-                        Еще нет аккаунта ? Регистрация
-                    </h5>
+                    <Button onClick={() => send()}>{registration ? "Регистрация" : "Вход"}</Button>
+                    <button className="text-center text-sm font-semibold text-gray-400 mb-6"
+                            onClick={() => setRegistration(!registration)}>
+                        {registration ? "Войти" : "Еще нет аккаунта ? Регистрация"}
+                    </button>
                 </div>
             </div>
         </div>

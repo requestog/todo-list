@@ -8,7 +8,10 @@ const $api = axios.create({
 });
 
 $api.interceptors.request.use((config) => {
-    config.headers.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
 });
 
@@ -16,20 +19,24 @@ $api.interceptors.response.use(
     (config) => config,
     async (error) => {
         const originalRequest = error.config;
-        if (
-            error.response.status === 401 &&
-            !originalRequest._isRetry
-        ) {
+
+        if (error.response?.status === 401 && !originalRequest._isRetry) {
+            originalRequest._isRetry = true;
             try {
                 const response: IAuthResponse = await AuthService.refresh();
                 localStorage.setItem("accessToken", response.accessToken);
+
+                originalRequest.headers.Authorization = `Bearer ${response.accessToken}`;
                 return $api(originalRequest);
-            } catch (error) {
-                console.error("Unauthorized:", error);
+            } catch (e) {
+                console.error("Refresh token expired or invalid:", e);
+                localStorage.removeItem("accessToken");
+                localStorage.removeItem("idSession");
             }
         }
+
         throw error;
-    },
+    }
 );
 
 export default $api;

@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, Post, Req, Res, UnauthorizedException, UseGuards} from '@nestjs/common';
 import {AuthDto} from "../dto/auth.dto";
 import {IAuthResponsePublic} from "../interfaces/IAuthResponsePublic";
 import {IAuthResponse} from "../interfaces/IAuthResponse";
@@ -6,6 +6,8 @@ import {AuthService} from "../services/auth.service";
 import {CookieService} from "../services/cookie.service";
 import {Request, Response} from 'express';
 import {LogoutDto} from "../dto/logout.dto";
+import {ISaveUser} from "../../user/interfaces/ISaveUser";
+import {JwtAuthGuard} from "../guards/jwt-auth.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -89,5 +91,16 @@ export class AuthController {
     ): Promise<void> {
         this.cookieService.clearRefreshToken(res);
         await this.authService.removeSession(dto.idSession);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/me')
+    getMe(@Req() req: Request): ISaveUser {
+        if (!req.user) {
+            throw new UnauthorizedException();
+        }
+
+        const { _id, username } = req.user as ISaveUser;
+        return { _id, username };
     }
 }
