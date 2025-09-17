@@ -2,13 +2,14 @@ import {Injectable, InternalServerErrorException, Logger} from '@nestjs/common';
 import {AuthDto} from "../dto/auth.dto";
 import {IAuthResponse} from "../interfaces/IAuthResponse";
 import {InjectModel} from "@nestjs/mongoose";
-import {UserService} from "../../user/user.service";
+import {UserService} from "../../user/services/user.service";
 import {TokenService} from "./token.service";
 import {ISaveUser} from "../../user/interfaces/ISaveUser";
 import {ITokens} from "../interfaces/ITokens";
 import {Model} from "mongoose";
 import {Session} from "../models/session.model";
 import {ISessionSaveProperties} from "../interfaces/ISessionSaveProperties";
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -59,5 +60,43 @@ export class AuthService {
             this.logger.error('Failed to save session', error);
             throw new InternalServerErrorException('Failed to save session');
         }
+    }
+
+    async login(
+        dto: AuthDto,
+        ipAddress: string | undefined,
+        userAgent: string | undefined,
+    ): Promise<IAuthResponse> {
+        try {
+            const user: ISaveUser = await this.validateUser(dto);
+            const tokens: ITokens = await this.tokenService.generateTokens(user);
+            const idSession: string = await this.saveSession({
+                userId: user._id,
+                refreshToken: tokens.refreshToken,
+                ipAddress,
+                userAgent,
+            });
+            this.logger.verbose(`User logged in successfully ${user}`);
+            return { tokens, user, idSession };
+        } catch (error) {
+            throw new InternalServerErrorException(`Failed to login ${error}`);
+        }
+    }
+
+    private async validateUser(dto: AuthDto): Promise<ISaveUser> {
+        const user: ISaveUser = await this.userService.getSaveUserUserName(dto.username);
+        if (!user) {
+            this.logger.error(`User not found ${dto.username}`);
+            throw new InternalServerErrorException('User not found');
+        }
+        const password: string = await this.userService.getUserPasswordById(user._id.toString());
+        const isPasswordMatching: boolean = bcrypt.compareSync(dto.password, password);
+
+        if (!isPasswordMatching) {
+            this.logger.error(`Invalid password ${user.username}`);
+            throw new InternalServerErrorException('Invalid password');
+        }
+
+        return user;
     }
 }

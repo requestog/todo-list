@@ -1,27 +1,22 @@
-import {
-    HttpException,
-    HttpStatus,
-    Injectable,
-    InternalServerErrorException,
-    Logger,
-} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable, InternalServerErrorException, Logger,} from '@nestjs/common';
 import {InjectModel} from "@nestjs/mongoose";
-import {User} from "./models/user.model";
+import {User} from "../models/user.model";
 import {Model} from "mongoose";
-import {IUser} from "./interfaces/IUser";
-import {ISaveUser} from "./interfaces/ISaveUser";
-import {CreateUserDto} from "./dto/create-user.dto";
+import {IUser} from "../interfaces/IUser";
+import {ISaveUser} from "../interfaces/ISaveUser";
+import {CreateUserDto} from "../dto/create-user.dto";
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
     private readonly logger: Logger = new Logger('UserService');
 
-    constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {}
+    constructor(@InjectModel(User.name) private readonly userModel: Model<User>) {
+    }
 
     async create(dto: CreateUserDto): Promise<ISaveUser> {
         try {
-            const user: IUser | null = await this.userModel.findOne({ where: { username: dto.username } });
+            const user: IUser | null = await this.userModel.findOne({where: {username: dto.username}});
             if (user) {
                 throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
             }
@@ -56,5 +51,17 @@ export class UserService {
             .select('-password -__v -createdAt -updatedAt')
             .lean()
             .exec()) as unknown as ISaveUser;
+    }
+
+    async getSaveUserUserName(username: string): Promise<ISaveUser> {
+        return (await this.userModel
+            .findOne({username})
+            .select('-password -__v -createdAt -updatedAt')
+            .lean()
+            .exec()) as unknown as ISaveUser;
+    }
+
+    async getUserPasswordById(id: string): Promise<string> {
+        return (await this.userModel.findById(id, {password: 1}).lean())?.password ?? '';
     }
 }
