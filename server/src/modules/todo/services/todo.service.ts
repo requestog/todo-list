@@ -38,4 +38,13 @@ export class TodoService {
         }
     }
 
+    async getAllbyID(id: string): Promise<Todo[]> {
+        try {
+            const todos = await this.todoModel.find({ userId: id }).select('-createdAt -updatedAt -__v');
+            return todos;
+        } catch (error) {
+            this.logger.error(error);
+            throw new InternalServerErrorException('Failed get todoss by id');
+        }
+    }
 }
