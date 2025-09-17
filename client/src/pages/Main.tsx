@@ -10,6 +10,8 @@ const Main = () => {
     const {userStore} = useContext(Context);
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
+    const [checkedTodos, setCheckedTodos] = useState<Record<string, boolean>>({});
+
 
     const createTodo = async (todoData: { id: number; title: string }) => {
         try {
@@ -62,6 +64,13 @@ const Main = () => {
         fetchTodos();
     }, [userStore.user._id]);
 
+    useEffect(() => {
+        const saved = localStorage.getItem('checkedTodos');
+        if (saved) {
+            setCheckedTodos(JSON.parse(saved));
+        }
+    }, []);
+
     return (
         <div className="App h-screen bg-gray-50">
             <div className="container mx-auto max-w-5xl">
@@ -72,7 +81,13 @@ const Main = () => {
                         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
                     </div>
                 ) : todos.length !== 0 ? (
-                    <TodoList remove={removeTodo} update={updateTodo} todos={todos} />
+                    <TodoList
+                        remove={removeTodo}
+                        update={updateTodo}
+                        todos={todos}
+                        checkedTodos={checkedTodos}
+                        setCheckedTodos={setCheckedTodos}
+                    />
                 ) : (
                     <div className="max-w-5xl mx-auto p-5 mt-10 text-center text-lg text-gray-500 border-2 border-gray-100 rounded-lg shadow">
                         Задачи не были найдены
