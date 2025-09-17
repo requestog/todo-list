@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://xserver-krv.ru:91",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
