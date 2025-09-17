@@ -40,15 +40,15 @@ const TodoForm: React.FC<TodoFormProps> = ({ create, onFilterChange }) => {
                     }}
                 />
 
-                <div className="flex items-center gap-2 w-full">
-                    <form className="flex gap-2 w-full" onSubmit={addTodo}>
+                <div className="flex flex-col sm:flex-row gap-2 w-full">
+                    <form className="flex flex-col sm:flex-row gap-2 flex-1" onSubmit={addTodo}>
                         <Input
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             type="text"
                             placeholder="Введите текст..."
                         />
-                        <Button type="submit">Добавить</Button>
+                        <Button type="submit" className="sm:mt-0 mt-2">Добавить</Button>
                     </form>
                 </div>
             </div>
