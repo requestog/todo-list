@@ -11,9 +11,9 @@ export class TodoController {
     }
 
     @Post('/create')
-    async create(@Body() dto: TodoDto): Promise<{ message: string }> {
-        await this.todoService.create(dto);
-        return { message: "Задача успешно создана" }
+    async create(@Body() dto: TodoDto) {
+        const data = await this.todoService.create(dto);
+        return { message: "Задача успешно создана", data }
     }
 
     @Delete('/delete/:id')

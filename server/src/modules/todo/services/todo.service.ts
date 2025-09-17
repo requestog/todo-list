@@ -11,9 +11,10 @@ export class TodoService {
     constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {
     }
 
-    async create(dto: TodoDto): Promise<void> {
+    async create(dto: TodoDto) {
         try {
-            await this.todoModel.create({...dto});
+            const data = await this.todoModel.create({...dto});
+            return data;
         } catch (error) {
             this.logger.error(error);
             throw new InternalServerErrorException('Failed to create todo');

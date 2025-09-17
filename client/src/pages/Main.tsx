@@ -11,12 +11,38 @@ const Main = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
 
-    const createTodo = (newTodo: Todo) => {
-        setTodos([...todos, newTodo]);
-    }
+    const createTodo = async (todoData: { id: number; title: string }) => {
+        try {
+            if (!userStore.user._id) return;
+            const response = await TodoService.createTodo(userStore.user._id, todoData.title);
+            const createdTodo = response.data;
+            setTodos([...todos, createdTodo]);
+        } catch (error) {
+            console.error("Ошибка при создании todo:", error);
+        }
+    };
 
-    const removeTodo = (id: number) => {
-        setTodos(todos.filter(todo => todo.id !== id));
+    const removeTodo = async (_id: number) => {
+        try {
+            await TodoService.removeTodo(_id);
+            setTodos(prevTodos => prevTodos.filter(todo => todo._id !== _id));
+        } catch (error) {
+            console.error("Ошибка при удалении todo:", error);
+        }
+    };
+
+    const updateTodo = async (_id: string, newTitle: string) => {
+        try {
+            await TodoService.updateTodo(_id, newTitle);
+
+            setTodos(prevTodos =>
+                prevTodos.map(todo =>
+                    todo._id === _id ? { ...todo, title: newTitle } : todo
+                )
+            );
+        } catch (error) {
+            console.error("Ошибка при обновлении todo:", error);
+        }
     };
 
     useEffect(() => {
@@ -46,7 +72,7 @@ const Main = () => {
                         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
                     </div>
                 ) : todos.length !== 0 ? (
-                    <TodoList remove={removeTodo} todos={todos} />
+                    <TodoList remove={removeTodo} update={updateTodo} todos={todos} />
                 ) : (
                     <div className="max-w-5xl mx-auto p-5 mt-10 text-center text-lg text-gray-500 border-2 border-gray-100 rounded-lg shadow">
                         Задачи не были найдены

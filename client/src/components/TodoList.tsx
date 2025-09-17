@@ -4,15 +4,16 @@ import type Todo from "../models/ITodo.ts";
 
 interface TodoListProps {
     todos: Todo[];
-    remove: (id: number) => void;
+    remove: (id: string) => void;
+    update: (id: string, newTitle: string) => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todos, remove }) => {
+const TodoList: React.FC<TodoListProps> = ({ todos, remove, update }) => {
     return (
         <div className="max-w-5xl border-2 border-gray-100 rounded-lg p-5 mt-10 mx-auto shadow">
-            {todos.map((todo) => {
-                return <TodoItem remove={remove} key={todo._id} todo={todo} />;
-            })}
+            {todos.map(todo => (
+                <TodoItem remove={remove} update={update} key={todo._id} todo={todo} />
+            ))}
         </div>
     );
 };

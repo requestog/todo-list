@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Button from "./UI/Button.tsx";
 import Input from "./UI/Input.tsx";
+import type Todo from "../models/ITodo.ts";
 
-interface Todo {
-    id: number;
-    title: string;
-}
 
 interface TodoItemProps {
     todo: Todo;
@@ -19,7 +16,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update }) => {
 
     const handleSave = () => {
         if (newTitle.trim() !== "") {
-            update(todo.id, newTitle.trim());
+            update(todo._id, newTitle.trim());
         }
         setIsEditing(false);
     };
@@ -29,7 +26,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update }) => {
             <div className="flex items-center gap-2 flex-1">
                 <input
                     type="checkbox"
-                    id={`todo-${todo.id}`}
+                    id={`todo-${todo._id}`}
                     className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 {isEditing ? (
@@ -42,7 +39,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update }) => {
                     />
                 ) : (
                     <label
-                        htmlFor={`todo-${todo.id}`}
+                        htmlFor={`todo-${todo._id}`}
                         className="text-gray-700 flex-1 break-words"
                     >
                         {todo.title}
@@ -60,7 +57,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update }) => {
                 ) : (
                     <>
                         <Button onClick={() => setIsEditing(true)}>Изменить</Button>
-                        <Button danger onClick={() => remove(todo.id)}>
+                        <Button danger onClick={() => remove(todo._id)}>
                             Удалить
                         </Button>
                     </>
