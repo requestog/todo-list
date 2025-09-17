@@ -30,7 +30,7 @@ const Main = () => {
         }
     };
 
-    const removeTodo = async (_id: number) => {
+    const removeTodo = async (_id: string) => {
         try {
             await TodoService.removeTodo(_id);
             setTodos(prevTodos => prevTodos.filter(todo => todo._id !== _id));

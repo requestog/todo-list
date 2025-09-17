@@ -9,12 +9,14 @@ interface DropdownProps {
     items: DropdownItem[];
     defaultValue?: DropdownItem;
     onSelect?: (item: DropdownItem) => void;
+    className?: string;
 }
 
 const Dropdown: React.FC<DropdownProps> = ({
                                                items,
                                                defaultValue,
                                                onSelect,
+                                               className
                                            }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState<DropdownItem | undefined>(
@@ -65,7 +67,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                 </svg>
             </button>
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                <div className={`relative inline-block text-left ${className || ''}`}>
                     <div className="py-1">
                         {items.map((item) => (
                             <button

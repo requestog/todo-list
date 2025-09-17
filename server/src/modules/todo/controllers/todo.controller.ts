@@ -3,6 +3,7 @@ import {TodoService} from "../services/todo.service";
 import {TodoDto} from "../dto/todo.dto";
 import {JwtAuthGuard} from "../../auth/guards/jwt-auth.guard";
 import {Todo} from "../models/todo.model";
+import {ITodo} from "../interfaces/ITodo";
 
 @UseGuards(JwtAuthGuard)
 @Controller('todo')
@@ -11,7 +12,7 @@ export class TodoController {
     }
 
     @Post('/create')
-    async create(@Body() dto: TodoDto) {
+    async create(@Body() dto: TodoDto): Promise<{message: string, data: ITodo}> {
         const data = await this.todoService.create(dto);
         return { message: "Задача успешно создана", data }
     }

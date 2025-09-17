@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Todo} from "../models/todo.model";
 import {TodoDto} from "../dto/todo.dto";
+import {ITodo} from "../interfaces/ITodo";
 
 @Injectable()
 export class TodoService {
@@ -11,10 +12,12 @@ export class TodoService {
     constructor(@InjectModel(Todo.name) private todoModel: Model<Todo>) {
     }
 
-    async create(dto: TodoDto) {
+    async create(dto: TodoDto): Promise<ITodo> {
         try {
-            const data = await this.todoModel.create({...dto});
-            return data;
+            const data = await this.todoModel.create({ ...dto });
+            const obj = data.toObject() as any; // или указать конкретный тип
+            const { createdAt, updatedAt, __v, ...filteredData } = obj;
+            return filteredData;
         } catch (error) {
             this.logger.error(error);
             throw new InternalServerErrorException('Failed to create todo');
