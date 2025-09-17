@@ -39,6 +39,18 @@ export default class UserStore {
         }
     }
 
+    async logout(): Promise<void> {
+        try {
+            await AuthService.logout(localStorage.getItem("idSession"));
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("idSession");
+            this.setIsAuth(false);
+            this.setUser({} as IUser);
+        } catch (error) {
+            console.error("logout error:", error);
+        }
+    }
+
     async checkAuth(): Promise<void> {
         try {
             const response = await $api.get("api/auth/me");

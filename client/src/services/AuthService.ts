@@ -26,4 +26,8 @@ export class AuthService {
         });
         return data;
     }
+
+    static async logout(idSession: string | null): Promise<void> {
+        await $api.post("/api/auth/logout", { idSession });
+    }
 }

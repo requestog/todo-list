@@ -1,32 +1,71 @@
-import React from 'react';
+import React, { useState } from "react";
 import Button from "./UI/Button.tsx";
+import Input from "./UI/Input.tsx";
 
-interface TodoItemProps {
-    todo: {
-        id: number;
-        title: string;
-    };
-    remove: (id: number) => void;
+interface Todo {
+    id: number;
+    title: string;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({todo, remove}) => {
+interface TodoItemProps {
+    todo: Todo;
+    remove: (id: number) => void;
+    update: (id: number, newTitle: string) => void;
+}
+
+const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update }) => {
+    const [isEditing, setIsEditing] = useState(false);
+    const [newTitle, setNewTitle] = useState(todo.title);
+
+    const handleSave = () => {
+        if (newTitle.trim() !== "") {
+            update(todo.id, newTitle.trim());
+        }
+        setIsEditing(false);
+    };
+
     return (
-        <div
-            className="flex items-center justify-between gap-2 p-5 mb-5 border-solid rounded-lg text-center text-lg border-2 border-gray-100">
-            <div className="flex items-center gap-2 checkbox">
+        <div className="flex items-center justify-between gap-2 p-5 mb-5 border rounded-lg text-lg border-gray-100">
+            <div className="flex items-center gap-2 flex-1">
                 <input
                     type="checkbox"
-                    id="myCheckbox"
+                    id={`todo-${todo.id}`}
                     className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
                 />
-                <label htmlFor="myCheckbox" className="text-gray-700">
-                    {todo.title}
-                </label>
+                {isEditing ? (
+                    <Input
+                        type="text"
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleSave()}
+                        autoFocus
+                    />
+                ) : (
+                    <label
+                        htmlFor={`todo-${todo.id}`}
+                        className="text-gray-700 flex-1 break-words"
+                    >
+                        {todo.title}
+                    </label>
+                )}
             </div>
-            <Button danger onClick={() => remove(todo.id)}>
-                Удалить
-            </Button>
-
+            <div className="flex items-center gap-2">
+                {isEditing ? (
+                    <>
+                        <Button onClick={handleSave}>Сохранить</Button>
+                        <Button danger onClick={() => setIsEditing(false)}>
+                            Отмена
+                        </Button>
+                    </>
+                ) : (
+                    <>
+                        <Button onClick={() => setIsEditing(true)}>Изменить</Button>
+                        <Button danger onClick={() => remove(todo.id)}>
+                            Удалить
+                        </Button>
+                    </>
+                )}
+            </div>
         </div>
     );
 };
