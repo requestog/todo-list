@@ -1,7 +1,7 @@
-```markdown
+
 ## Установка
 
-
+```markdown
 npm install
 ```
 
@@ -42,4 +42,3 @@ npm run start:prod
 
 - Пользователи сохраняются и аутентифицируются в базе данных MongoDB
 
-## Middleware для защиты маршрутов
