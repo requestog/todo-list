@@ -153,4 +153,14 @@ export class AuthService {
             throw new InternalServerErrorException('Failed to update session');
         }
     }
+
+    async removeSession(idSession: string): Promise<void> {
+        try {
+            await this.sessionModel.deleteOne({ _id: idSession });
+            this.logger.verbose(`Deleting session with id ${idSession}`);
+        } catch (error) {
+            this.logger.error(`Failed to remove session ${idSession}`);
+            throw new InternalServerErrorException(`Failed to remove session ${error}`);
+        }
+    }
 }
