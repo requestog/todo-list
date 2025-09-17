@@ -1,4 +1,4 @@
-import {Body, Controller, Post, Req, Res} from '@nestjs/common';
+import {Body, Controller, Get, Post, Req, Res} from '@nestjs/common';
 import {AuthDto} from "../dto/auth.dto";
 import {IAuthResponsePublic} from "../interfaces/IAuthResponsePublic";
 import {IAuthResponse} from "../interfaces/IAuthResponse";
@@ -46,6 +46,30 @@ export class AuthController {
         const userAgent: string | undefined = req.headers['user-agent'];
 
         const authResponse: IAuthResponse = await this.authService.login(dto, ipAddress, userAgent);
+
+        this.cookieService.setRefreshToken(res, authResponse.tokens.refreshToken);
+        return {
+            user: authResponse.user,
+            accessToken: authResponse.tokens.accessToken,
+            idSession: authResponse.idSession,
+        };
+    }
+
+    @Get('/refresh')
+    async refresh(
+        @Req() req: Request,
+        @Res({ passthrough: true }) res: Response,
+    ): Promise<IAuthResponsePublic> {
+        const { refreshToken } = req.cookies;
+
+        const ipAddress: string | undefined = req.ip;
+        const userAgent: string | undefined = req.headers['user-agent'];
+
+        const authResponse: IAuthResponse = await this.authService.updateRefreshToken({
+            refreshToken,
+            userAgent,
+            ipAddress,
+        });
 
         this.cookieService.setRefreshToken(res, authResponse.tokens.refreshToken);
         return {

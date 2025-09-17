@@ -1,4 +1,4 @@
-import {Injectable, InternalServerErrorException, Logger} from '@nestjs/common';
+import {Injectable, InternalServerErrorException, Logger, UnauthorizedException} from '@nestjs/common';
 import {AuthDto} from "../dto/auth.dto";
 import {IAuthResponse} from "../interfaces/IAuthResponse";
 import {InjectModel} from "@nestjs/mongoose";
@@ -10,6 +10,7 @@ import {Model} from "mongoose";
 import {Session} from "../models/session.model";
 import {ISessionSaveProperties} from "../interfaces/ISessionSaveProperties";
 import * as bcrypt from 'bcryptjs';
+import {IRefreshTokenProperties} from "../interfaces/IRefreshTokenProperties";
 
 @Injectable()
 export class AuthService {
@@ -19,7 +20,8 @@ export class AuthService {
         @InjectModel(Session.name) private sessionModel: Model<Session>,
         private readonly userService: UserService,
         private readonly tokenService: TokenService,
-    ) {}
+    ) {
+    }
 
     async registration(
         dto: AuthDto,
@@ -39,7 +41,7 @@ export class AuthService {
             });
             this.logger.verbose(`User registration in successfully ${idSession}`);
 
-            return { tokens, user, idSession };
+            return {tokens, user, idSession};
         } catch (error) {
             this.logger.error(error);
             throw new InternalServerErrorException('Failed to registration');
@@ -53,7 +55,7 @@ export class AuthService {
                 ...options,
                 expiresAt,
             });
-            const { _id } = await session.save();
+            const {_id} = await session.save();
             this.logger.verbose(`Save session`);
             return _id.toString();
         } catch (error) {
@@ -77,7 +79,7 @@ export class AuthService {
                 userAgent,
             });
             this.logger.verbose(`User logged in successfully ${user}`);
-            return { tokens, user, idSession };
+            return {tokens, user, idSession};
         } catch (error) {
             throw new InternalServerErrorException(`Failed to login ${error}`);
         }
@@ -98,5 +100,57 @@ export class AuthService {
         }
 
         return user;
+    }
+
+    async updateRefreshToken(options: IRefreshTokenProperties): Promise<IAuthResponse> {
+        try {
+            if (!options.refreshToken) {
+                throw new UnauthorizedException('Refresh token not found in cookie.');
+            }
+
+            const {session, payload} = await this.tokenService.validateRefreshToken(
+                options.refreshToken,
+            );
+
+            const user: ISaveUser | null = await this.userService.getSaveUserById(payload.sub);
+
+            const tokens: ITokens = await this.tokenService.generateTokens(user);
+            const idSession = session._id.toString();
+            this.logger.verbose(`SESSION ID ${idSession}`);
+            await this.updateSession({
+                id: session._id,
+                userId: user._id,
+                refreshToken: tokens.refreshToken,
+                ipAddress: options.ipAddress,
+                userAgent: options.userAgent,
+            });
+
+            return {tokens, user, idSession};
+        } catch (error) {
+            this.logger.error(`Failed to update refresh token ${error}`);
+            throw new InternalServerErrorException(`Failed to update refresh token ${error}`);
+        }
+    }
+
+    private async updateSession(options: ISessionSaveProperties): Promise<void> {
+        try {
+            const expiresAt: Date = this.tokenService.calculateSessionExpirationDate();
+            await this.sessionModel
+                .findOneAndUpdate(
+                    {_id: options.id},
+                    {
+                        $set: {
+                            ...options,
+                            expiresAt,
+                        },
+                    },
+                    {new: true, upsert: false},
+                )
+                .exec();
+            this.logger.verbose(`Update session`);
+        } catch (error) {
+            this.logger.error('Failed to update session', error);
+            throw new InternalServerErrorException('Failed to update session');
+        }
     }
 }
