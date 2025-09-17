@@ -29,7 +29,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, remove, update, checkedTodos,
                 <input
                     type="checkbox"
                     id={`todo-${todo._id}`}
-                    className="h-4 w-4 text-blue-600 rounded focus:ring-blue-500 focus:ring-2"
                     checked={checkedTodos[todo._id] || false}
                     onChange={(e) => {
                         const newChecked = { ...checkedTodos, [todo._id]: e.target.checked };

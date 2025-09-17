@@ -5,9 +5,10 @@ import Button from "./UI/Button.tsx";
 
 interface TodoFormProps {
     create: (todo: { id: number; title: string }) => void;
+    onFilterChange: (filter: 'all' | 'active' | 'completed') => void;
 }
 
-const TodoForm: React.FC<TodoFormProps> = ({ create }) => {
+const TodoForm: React.FC<TodoFormProps> = ({ create, onFilterChange }) => {
     const [title, setTitle] = useState("");
 
     const addTodo = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,7 +31,12 @@ const TodoForm: React.FC<TodoFormProps> = ({ create }) => {
                         { id: 3, label: 'Выполненные' },
                     ]}
                     defaultValue={{ id: 1, label: 'Все' }}
-                    onSelect={(item) => console.log('Selected:', item)}
+                    onSelect={(item) => {
+                        let value: 'all' | 'active' | 'completed' = 'all';
+                        if (item.id === 2) value = 'active';
+                        if (item.id === 3) value = 'completed';
+                        onFilterChange(value);
+                    }}
                 />
 
                 <div className="flex items-center gap-2 w-full">

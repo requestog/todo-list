@@ -11,7 +11,13 @@ const Main = () => {
     const [todos, setTodos] = useState<Todo[]>([]);
     const [loading, setLoading] = useState(true);
     const [checkedTodos, setCheckedTodos] = useState<Record<string, boolean>>({});
-
+    const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+    const filteredTodos = todos.filter(todo => {
+        const isChecked = checkedTodos[todo._id] || false;
+        if (filter === 'active') return !isChecked;
+        if (filter === 'completed') return isChecked;
+        return true; // all
+    });
 
     const createTodo = async (todoData: { id: number; title: string }) => {
         try {
@@ -74,8 +80,14 @@ const Main = () => {
     return (
         <div className="App h-screen bg-gray-50">
             <div className="container mx-auto max-w-5xl">
-                <Header />
-                <TodoForm create={createTodo} />
+                <Header clearCheckedTodos={() => {
+                    setCheckedTodos({});
+                    localStorage.removeItem('checkedTodos');
+                }} />
+                <TodoForm
+                    create={createTodo}
+                    onFilterChange={setFilter}
+                />
                 {loading ? (
                     <div className="flex justify-center items-center mt-20">
                         <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-500 border-t-transparent"></div>
@@ -84,7 +96,7 @@ const Main = () => {
                     <TodoList
                         remove={removeTodo}
                         update={updateTodo}
-                        todos={todos}
+                        todos={filteredTodos}
                         checkedTodos={checkedTodos}
                         setCheckedTodos={setCheckedTodos}
                     />

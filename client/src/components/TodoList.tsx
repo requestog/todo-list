@@ -15,9 +15,10 @@ const TodoList: React.FC<TodoListProps> = ({ todos, remove, update, checkedTodos
         <div className="max-w-5xl border-2 border-gray-100 rounded-lg p-5 mt-10 mx-auto shadow">
             {todos.map(todo => (
                 <TodoItem
+                    key={todo._id}
+                    todo={todo}
                     remove={remove}
                     update={update}
-                    todo={todo}
                     checkedTodos={checkedTodos}
                     setCheckedTodos={setCheckedTodos}
                 />
