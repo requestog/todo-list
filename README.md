@@ -1,7 +1,7 @@
-# Ссыллки
+# Ссылки
 
 ```markdown
-Todo list - https://gordondev.ru
+Todo list - https://gordondev.ru (включить VPN, если клиент не работает)
 ```
 
 ```markdown
