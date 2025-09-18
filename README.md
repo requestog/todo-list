@@ -1,15 +1,15 @@
 # Ссылки
 
 ```markdown
-Todo list - https://gordondev.ru (включить VPN, если клиент не работает)
+Todo list - [https://gordondev.ru](http://www.gordondev.ru/auth)
 ```
 
 ```markdown
-API - https://gordondev.ru/api/
+API - [https://www.gordondev.ru/api/](http://www.gordondev.ru/api/)
 ```
 
 ```markdown
-API Документация - https://gordondev.ru/api/docs
+API Документация - [https://gordondev.ru/api/docs](http://www.gordondev.ru/api/docs)
 ```
 
 # Клиент
